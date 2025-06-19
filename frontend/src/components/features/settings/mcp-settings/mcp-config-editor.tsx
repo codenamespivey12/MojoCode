@@ -28,7 +28,7 @@ export function MCPConfigEditor({ mcpConfig, onChange }: MCPConfigEditorProps) {
         <div className="text-sm font-medium">
           {t(I18nKey.SETTINGS$MCP_TITLE)}
         </div>
-        <p className="text-xs text-[#A3A3A3]">
+        <p className="text-xs text-neutral-400">
           {t(I18nKey.SETTINGS$MCP_DESCRIPTION)}
         </p>
       </div>

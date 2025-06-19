@@ -73,7 +73,7 @@ export function DeleteApiKeyModal({
       footer={modalFooter}
     >
       <div data-testid="delete-api-key-modal">
-        <p className="text-sm">
+        <p className="text-sm text-content">
           {t(I18nKey.SETTINGS$DELETE_API_KEY_CONFIRMATION, {
             name: keyToDelete.name,
           })}

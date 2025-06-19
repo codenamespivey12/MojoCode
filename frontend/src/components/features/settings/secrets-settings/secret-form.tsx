@@ -151,15 +151,15 @@ export function SecretForm({
 
       {mode === "add" && (
         <label className="flex flex-col gap-2.5 w-full max-w-[680px]">
-          <span className="text-sm">Value</span>
+          <span className="text-sm text-content">Value</span>
           <textarea
             data-testid="value-input"
             name="secret-value"
             required
             className={cn(
               "resize-none",
-              "bg-tertiary border border-[#717888] rounded-sm p-2 placeholder:italic placeholder:text-tertiary-alt",
-              "disabled:bg-[#2D2F36] disabled:border-[#2D2F36] disabled:cursor-not-allowed",
+              "bg-tertiary border border-neutral-600 rounded-sm p-2 placeholder:italic placeholder:text-tertiary-alt",
+              "disabled:bg-neutral-800 disabled:border-neutral-800 disabled:cursor-not-allowed",
             )}
             rows={8}
           />
@@ -168,7 +168,7 @@ export function SecretForm({
 
       <label className="flex flex-col gap-2.5 w-full max-w-[680px]">
         <div className="flex items-center gap-2">
-          <span className="text-sm">Description</span>
+          <span className="text-sm text-content">Description</span>
           <OptionalTag />
         </div>
         <input
@@ -177,8 +177,8 @@ export function SecretForm({
           defaultValue={secretDescription}
           className={cn(
             "resize-none",
-            "bg-tertiary border border-[#717888] rounded-sm p-2 placeholder:italic placeholder:text-tertiary-alt",
-            "disabled:bg-[#2D2F36] disabled:border-[#2D2F36] disabled:cursor-not-allowed",
+            "bg-tertiary border border-neutral-600 rounded-sm p-2 placeholder:italic placeholder:text-tertiary-alt",
+            "disabled:bg-neutral-800 disabled:border-neutral-800 disabled:cursor-not-allowed",
           )}
         />
       </label>

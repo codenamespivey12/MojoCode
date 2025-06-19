@@ -19,7 +19,7 @@ export function DocsButton({ disabled = false }: DocsButtonProps) {
       <DocsIcon
         width={28}
         height={28}
-        className={`text-[#9099AC] ${disabled ? "opacity-50" : ""}`}
+        className={`text-neutral-400 ${disabled ? "opacity-50" : ""}`}
       />
     </TooltipButton>
   );

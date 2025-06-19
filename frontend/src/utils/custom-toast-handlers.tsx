@@ -2,8 +2,8 @@ import { CSSProperties } from "react";
 import toast, { ToastOptions } from "react-hot-toast";
 
 const TOAST_STYLE: CSSProperties = {
-  background: "#454545",
-  border: "1px solid #717888",
+  background: "rgb(64 64 64)", // neutral-700
+  border: "1px solid rgb(82 82 82)", // neutral-600
   color: "#fff",
   borderRadius: "4px",
 };

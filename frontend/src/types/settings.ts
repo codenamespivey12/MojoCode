@@ -1,11 +1,3 @@
-export const ProviderOptions = {
-  github: "github",
-  gitlab: "gitlab",
-  bitbucket: "bitbucket",
-} as const;
-
-export type Provider = keyof typeof ProviderOptions;
-
 export type ProviderToken = {
   token: string;
   host: string | null;
@@ -38,7 +30,9 @@ export type Settings = {
   CONFIRMATION_MODE: boolean;
   SECURITY_ANALYZER: string;
   REMOTE_RUNTIME_RESOURCE_FACTOR: number | null;
-  PROVIDER_TOKENS_SET: Partial<Record<Provider, string | null>>;
+  PROVIDER_TOKENS_SET: {
+    github: string | null;
+  };
   ENABLE_DEFAULT_CONDENSER: boolean;
   ENABLE_SOUND_NOTIFICATIONS: boolean;
   ENABLE_PROACTIVE_CONVERSATION_STARTERS: boolean;
@@ -66,7 +60,9 @@ export type ApiSettings = {
   enable_proactive_conversation_starters: boolean;
   user_consents_to_analytics: boolean | null;
   search_api_key?: string;
-  provider_tokens_set: Partial<Record<Provider, string | null>>;
+  provider_tokens_set: {
+    github: string | null;
+  };
   mcp_config?: {
     sse_servers: (string | MCPSSEServer)[];
     stdio_servers: MCPStdioServer[];

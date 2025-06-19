@@ -3,12 +3,12 @@ import { Settings } from "#/types/settings";
 export const LATEST_SETTINGS_VERSION = 5;
 
 export const DEFAULT_SETTINGS: Settings = {
-  LLM_MODEL: "anthropic/claude-sonnet-4-20250514",
+  LLM_MODEL: "openai/o4-mini-2025-04-16",
   LLM_BASE_URL: "",
   AGENT: "CodeActAgent",
   LANGUAGE: "en",
-  LLM_API_KEY_SET: false,
-  SEARCH_API_KEY_SET: false,
+  LLM_API_KEY_SET: true,
+  SEARCH_API_KEY_SET: true,
   CONFIRMATION_MODE: false,
   SECURITY_ANALYZER: "",
   REMOTE_RUNTIME_RESOURCE_FACTOR: 1,

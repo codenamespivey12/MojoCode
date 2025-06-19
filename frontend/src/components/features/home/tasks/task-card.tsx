@@ -49,22 +49,12 @@ export function TaskCard({ task }: TaskCardProps) {
   };
 
   // Determine the correct URL format based on git provider
-  let href: string;
-  if (task.git_provider === "gitlab") {
-    const issueType =
-      task.task_type === "OPEN_ISSUE" ? "issues" : "merge_requests";
-    href = `https://gitlab.com/${task.repo}/-/${issueType}/${task.issue_number}`;
-  } else if (task.git_provider === "bitbucket") {
-    const issueType =
-      task.task_type === "OPEN_ISSUE" ? "issues" : "pull-requests";
-    href = `https://bitbucket.org/${task.repo}/${issueType}/${task.issue_number}`;
-  } else {
-    const hrefType = task.task_type === "OPEN_ISSUE" ? "issues" : "pull";
-    href = `https://github.com/${task.repo}/${hrefType}/${task.issue_number}`;
-  }
+  // Only GitHub is supported now
+  const hrefType = task.task_type === "OPEN_ISSUE" ? "issues" : "pull";
+  const href = `https://github.com/${task.repo}/${hrefType}/${task.issue_number}`;
 
   return (
-    <li className="py-3 border-b border-[#717888] flex items-center pr-6">
+    <li className="py-3 border-b border-neutral-600 flex items-center pr-6">
       <TaskIssueNumber issueNumber={task.issue_number} href={href} />
 
       <div className="w-full pl-8">

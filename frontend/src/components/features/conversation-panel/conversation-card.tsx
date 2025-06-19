@@ -172,7 +172,7 @@ export function ConversationCard({
         className={cn(
           "h-[100px] w-full px-[18px] py-4 border-b border-neutral-600 cursor-pointer",
           variant === "compact" &&
-            "md:w-fit h-auto rounded-xl border border-[#525252]",
+            "md:w-fit h-auto rounded-xl border border-neutral-600",
         )}
       >
         <div className="flex items-center justify-between w-full">

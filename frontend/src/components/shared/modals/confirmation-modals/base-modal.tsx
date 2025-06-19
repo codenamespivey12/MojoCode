@@ -30,7 +30,7 @@ export function BaseModalDescription({
   children,
 }: BaseModalDescriptionProps) {
   return (
-    <span className="text-xs text-[#A3A3A3]">{children || description}</span>
+    <span className="text-xs text-neutral-400">{children || description}</span>
   );
 }
 

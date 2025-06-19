@@ -12,7 +12,7 @@ export function BaseUrlInput({ isDisabled, defaultValue }: BaseUrlInputProps) {
 
   return (
     <fieldset className="flex flex-col gap-2">
-      <label htmlFor="base-url" className="font-[500] text-[#A3A3A3] text-xs">
+      <label htmlFor="base-url" className="font-[500] text-neutral-400 text-xs">
         {t(I18nKey.SETTINGS_FORM$BASE_URL_LABEL)}
       </label>
       <Input
@@ -22,7 +22,7 @@ export function BaseUrlInput({ isDisabled, defaultValue }: BaseUrlInputProps) {
         defaultValue={defaultValue}
         aria-label={t(I18nKey.SETTINGS_FORM$BASE_URL)}
         classNames={{
-          inputWrapper: "bg-[#27272A] rounded-md text-sm px-3 py-[10px]",
+          inputWrapper: "bg-neutral-800 rounded-md text-sm px-3 py-[10px]",
         }}
       />
     </fieldset>

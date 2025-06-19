@@ -24,7 +24,7 @@ export function ApiKeyModalBase({
         className="bg-base-secondary p-6 rounded-xl flex flex-col gap-4 border border-tertiary"
         style={{ width }}
       >
-        <h3 className="text-xl font-bold">{title}</h3>
+        <h3 className="text-xl font-bold text-content">{title}</h3>
         {children}
         <div className="w-full flex gap-2 mt-2">{footer}</div>
       </div>

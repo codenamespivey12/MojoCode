@@ -1,10 +1,6 @@
 import { openHands } from "./open-hands-axios";
-import {
-  CustomSecret,
-  GetSecretsResponse,
-  POSTProviderTokens,
-} from "./secrets-service.types";
-import { Provider, ProviderToken } from "#/types/settings";
+import { CustomSecret, GetSecretsResponse } from "./secrets-service.types";
+import { ProviderToken } from "#/types/settings";
 
 export class SecretsService {
   static async getSecrets() {
@@ -38,13 +34,10 @@ export class SecretsService {
     return status === 200;
   }
 
-  static async addGitProvider(providers: Record<Provider, ProviderToken>) {
-    const tokens: POSTProviderTokens = {
-      provider_tokens: providers,
-    };
+  static async addGitProvider(providers: { github: ProviderToken }) {
     const { data } = await openHands.post<boolean>(
       "/api/add-git-providers",
-      tokens,
+      providers,
     );
     return data;
   }

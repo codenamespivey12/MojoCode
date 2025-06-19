@@ -58,7 +58,9 @@ function SettingsScreen() {
     >
       <header className="px-3 py-1.5 border-b border-b-tertiary flex items-center gap-2">
         <SettingsIcon width={16} height={16} />
-        <h1 className="text-sm leading-6">{t(I18nKey.SETTINGS$TITLE)}</h1>
+        <h1 className="text-sm leading-6 text-content">
+          {t(I18nKey.SETTINGS$TITLE)}
+        </h1>
       </header>
 
       <nav
@@ -77,7 +79,7 @@ function SettingsScreen() {
               )
             }
           >
-            <span className="text-[#F9FBFE] text-sm">{text}</span>
+            <span className="text-white text-sm">{text}</span>
           </NavLink>
         ))}
       </nav>

@@ -29,7 +29,7 @@ export function ConversationPanelButton({
       <FaListUl
         size={22}
         className={cn(
-          isOpen ? "text-white" : "text-[#9099AC]",
+          isOpen ? "text-white" : "text-neutral-400",
           disabled && "opacity-50",
         )}
       />

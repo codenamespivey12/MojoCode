@@ -36,7 +36,7 @@ export const useAuthCallback = () => {
     // Set the login method if it's valid
     if (
       loginMethod === LoginMethod.GITHUB ||
-      loginMethod === LoginMethod.GITLAB
+      false // GitLab removed
     ) {
       setLoginMethod(loginMethod as LoginMethod);
 

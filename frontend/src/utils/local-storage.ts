@@ -6,21 +6,19 @@ export const LOCAL_STORAGE_KEYS = {
 // Login methods
 export enum LoginMethod {
   GITHUB = "github",
-  GITLAB = "gitlab",
-  BITBUCKET = "bitbucket",
 }
 
 /**
  * Set the login method in local storage
- * @param method The login method (github, gitlab, or bitbucket)
+ * @param method The login method (github)
  */
 export const setLoginMethod = (method: LoginMethod): void => {
   localStorage.setItem(LOCAL_STORAGE_KEYS.LOGIN_METHOD, method);
 };
 
 /**
- * Get the login method from local storage
- * @returns The login method or null if not set
+ * Gets the login method from local storage.
+ * @returns The login method ("github" only) or null if not set.
  */
 export const getLoginMethod = (): LoginMethod | null => {
   const method = localStorage.getItem(LOCAL_STORAGE_KEYS.LOGIN_METHOD);

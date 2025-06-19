@@ -51,7 +51,9 @@ export function NewApiKeyModal({
       footer={modalFooter}
     >
       <div data-testid="new-api-key-modal">
-        <p className="text-sm">{t(I18nKey.SETTINGS$API_KEY_WARNING)}</p>
+        <p className="text-sm text-content">
+          {t(I18nKey.SETTINGS$API_KEY_WARNING)}
+        </p>
         <div className="bg-base-tertiary p-4 rounded-md font-mono text-sm break-all mt-4">
           {newlyCreatedKey.key}
         </div>

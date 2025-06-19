@@ -1,4 +1,4 @@
-import { Provider, ProviderToken } from "#/types/settings";
+import { ProviderToken } from "#/types/settings";
 
 export type CustomSecret = {
   name: string;
@@ -11,5 +11,5 @@ export interface GetSecretsResponse {
 }
 
 export interface POSTProviderTokens {
-  provider_tokens: Record<Provider, ProviderToken>;
+  github: ProviderToken;
 }

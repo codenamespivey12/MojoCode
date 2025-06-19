@@ -1,10 +1,13 @@
 /**
  * Generates a URL to redirect to for OAuth authentication
- * @param identityProvider The identity provider to use (e.g., "github", "gitlab", "bitbucket")
+ * @param identityProvider The identity provider to use ("github" only)
  * @param requestUrl The URL of the request
  * @returns The URL to redirect to for OAuth
  */
-export const generateAuthUrl = (identityProvider: string, requestUrl: URL) => {
+export const generateAuthUrl = (
+  identityProvider: "github",
+  requestUrl: URL,
+) => {
   // Use HTTPS protocol unless the host is localhost
   const protocol =
     requestUrl.hostname === "localhost" ? requestUrl.protocol : "https:";

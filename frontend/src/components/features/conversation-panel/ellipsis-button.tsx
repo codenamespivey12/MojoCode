@@ -7,7 +7,7 @@ interface EllipsisButtonProps {
 export function EllipsisButton({ onClick }: EllipsisButtonProps) {
   return (
     <button data-testid="ellipsis-button" type="button" onClick={onClick}>
-      <FaEllipsisV fill="#a3a3a3" />
+      <FaEllipsisV className="fill-neutral-400" />
     </button>
   );
 }

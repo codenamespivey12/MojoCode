@@ -19,17 +19,11 @@ export function ActionSuggestions({
   const [hasPullRequest, setHasPullRequest] = React.useState(false);
 
   const providersAreSet = providers.length > 0;
-  const isGitLab = providers.includes("gitlab");
-  const isBitbucket = providers.includes("bitbucket");
+  // Only GitHub is supported now
+  const pr = "pull request";
+  const prShort = "PR";
 
-  const pr = isGitLab ? "merge request" : "pull request";
-  const prShort = isGitLab ? "MR" : "PR";
-
-  const getProviderName = () => {
-    if (isGitLab) return "GitLab";
-    if (isBitbucket) return "Bitbucket";
-    return "GitHub";
-  };
+  const getProviderName = () => "GitHub";
 
   const terms = {
     pr,

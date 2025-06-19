@@ -25,14 +25,14 @@ export function AdvancedOptionSwitch({
       onValueChange={setShowAdvancedOptions}
       classNames={{
         thumb: cn(
-          "bg-[#5D5D5D] w-3 h-3 z-0",
+          "bg-neutral-600 w-3 h-3 z-0",
           "group-data-[selected=true]:bg-white",
         ),
         wrapper: cn(
-          "border border-[#D4D4D4] bg-white px-[6px] w-12 h-6",
-          "group-data-[selected=true]:border-transparent group-data-[selected=true]:bg-[#4465DB]",
+          "border border-neutral-300 bg-white px-[6px] w-12 h-6",
+          "group-data-[selected=true]:border-transparent group-data-[selected=true]:bg-blue-600",
         ),
-        label: "text-[#A3A3A3] text-xs",
+        label: "text-neutral-400 text-xs",
       }}
     >
       {t(I18nKey.SETTINGS_FORM$ADVANCED_OPTIONS_LABEL)}
