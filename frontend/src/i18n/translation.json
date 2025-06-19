@@ -839,7 +839,7 @@
   "BADGE$BETA": {
     "en": "Beta"
   },
-  "AGENT$RESUME_TASK": {
+  "AGENT$RESUME_TASK_ACTION": {
     "en": "Resume the agent task"
   },
   "AGENT$PAUSE_TASK": {
@@ -1683,7 +1683,7 @@
     "en": "Submitting..."
   },
   "FEEDBACK$SUBMITTING_MESSAGE": {
-    "en": "Submitting feedback, please wait..."
+    "en": "Submitting feedback, please wait."
   },
   "SETTINGS$NAV_USER": {
     "en": "User"
@@ -1756,5 +1756,8 @@
   },
   "FEEDBACK$FAILED_TO_SUBMIT": {
     "en": "Failed to submit feedback"
+  },
+  "AGENT$RESUME_TASK": {
+    "en": "Resume task"
   }
 }
