@@ -12,21 +12,14 @@ class ServerConfig(ServerConfigInterface):
     github_client_id = os.environ.get('GITHUB_APP_CLIENT_ID', '')
     enable_billing = os.environ.get('ENABLE_BILLING', 'false') == 'true'
     hide_llm_settings = os.environ.get('HIDE_LLM_SETTINGS', 'false') == 'true'
-    use_supabase = os.environ.get('USE_SUPABASE', 'false') == 'true'
     settings_store_class: str = (
-        'openhands.storage.settings.supabase_settings_store.SupabaseSettingsStore'
-        if use_supabase
-        else 'openhands.storage.settings.file_settings_store.FileSettingsStore'
+        'openhands.storage.settings.file_settings_store.FileSettingsStore'
     )
     secret_store_class: str = (
-        'openhands.storage.secrets.supabase_secrets_store.SupabaseSecretsStore'
-        if use_supabase
-        else 'openhands.storage.secrets.file_secrets_store.FileSecretsStore'
+        'openhands.storage.secrets.file_secrets_store.FileSecretsStore'
     )
     conversation_store_class: str = (
-        'openhands.storage.conversation.supabase_conversation_store.SupabaseConversationStore'
-        if use_supabase
-        else 'openhands.storage.conversation.file_conversation_store.FileConversationStore'
+        'openhands.storage.conversation.file_conversation_store.FileConversationStore'
     )
     conversation_manager_class: str = os.environ.get(
         'CONVERSATION_MANAGER_CLASS',
@@ -34,9 +27,7 @@ class ServerConfig(ServerConfigInterface):
     )
     monitoring_listener_class: str = 'openhands.server.monitoring.MonitoringListener'
     user_auth_class: str = (
-        'openhands.server.user_auth.supabase_user_auth.SupabaseUserAuth'
-        if use_supabase
-        else 'openhands.server.user_auth.default_user_auth.DefaultUserAuth'
+        'openhands.server.user_auth.default_user_auth.DefaultUserAuth'
     )
 
     def verify_config(self):
