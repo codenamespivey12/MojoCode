@@ -548,8 +548,25 @@ function scanFileForUnlocalizedStrings(filePath) {
   }
 
   try {
-    const content = fs.readFileSync(filePath, "utf-8");
+    let content = fs.readFileSync(filePath, "utf-8");
     const unlocalizedStrings = [];
+
+    // Deduplicate `useTranslation` imports which can trigger a VarRedeclaration
+    // error in the parser when present more than once in a file. This situation
+    // occasionally happens during merges and breaks the scanning step.
+    const lines = content.split("\n");
+    const seenUseTranslation = new Set();
+    content = lines
+      .filter((line) => {
+        if (/^\s*import\s+.*useTranslation/.test(line)) {
+          if (seenUseTranslation.has(line)) {
+            return false;
+          }
+          seenUseTranslation.add(line);
+        }
+        return true;
+      })
+      .join("\n");
 
     // Skip files that are too large
     if (content.length > 1000000) {
