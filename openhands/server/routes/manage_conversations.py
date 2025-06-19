@@ -30,7 +30,10 @@ from openhands.integrations.service_types import (
     ProviderType,
     SuggestedTask,
 )
-from openhands.llm.llm import LLM
+from openhands.utils.openai_responses import (
+    call_openai_responses_api,
+    parse_response_text,
+)
 from openhands.runtime import get_runtime_cls
 from openhands.server.data_models.agent_loop_info import AgentLoopInfo
 from openhands.server.data_models.conversation_info import ConversationInfo
@@ -338,20 +341,16 @@ def generate_prompt_template(events: str) -> str:
 
 
 def generate_prompt(llm_config: LLMConfig, prompt_template: str) -> str:
-    llm = LLM(llm_config)
-    messages = [
-        {
-            'role': 'system',
-            'content': prompt_template,
-        },
-        {
-            'role': 'user',
-            'content': 'Please generate a prompt for the AI to update the special file based on the events provided.',
-        },
-    ]
+    user_prompt = (
+        'Please generate a prompt for the AI to update the special file based on the events provided.'
+    )
 
-    response = llm.completion(messages=messages)
-    raw_prompt = response['choices'][0]['message']['content'].strip()
+    response_json = call_openai_responses_api(
+        llm_config,
+        user_prompt,
+        instructions=prompt_template,
+    )
+    raw_prompt = parse_response_text(response_json).strip()
     prompt = re.search(r'<update_prompt>(.*?)</update_prompt>', raw_prompt, re.DOTALL)
 
     if prompt:

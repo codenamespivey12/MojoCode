@@ -146,7 +146,9 @@ api_key = ""
 #max_output_tokens = 0
 
 # Model to use. (For Headless / CLI only -  In Web this is overridden by Session Init)
-model = "gpt-4o"
+model = "openai/o4-mini"
+# Set reasoning effort for the default model
+reasoning_effort = "high"
 
 # Number of retries to attempt when an operation fails with the LLM.
 # Increase this value to allow more attempts before giving up
