@@ -7,9 +7,11 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^5.32.0",
     "@heroui/react": "^2.8.0-beta.7",
     "@microlink/react-json-view": "^1.26.2",
     "@monaco-editor/react": "^4.7.0-rc.0",
+    "@neondatabase/serverless": "^1.0.1",
     "@react-router/node": "^7.6.2",
     "@react-router/serve": "^7.6.2",
     "@react-types/shared": "^3.29.1",
@@ -24,6 +26,9 @@
     "@xterm/xterm": "^5.4.0",
     "axios": "^1.10.0",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "dotenv": "^16.5.0",
+    "drizzle-orm": "^0.44.2",
     "eslint-config-airbnb-typescript": "^18.0.0",
     "framer-motion": "^12.18.1",
     "i18next": "^25.2.1",
@@ -71,7 +76,10 @@
     "prepare": "cd .. && husky frontend/.husky",
     "typecheck": "react-router typegen && tsc",
     "check-unlocalized-strings": "node scripts/check-unlocalized-strings.cjs",
-    "check-translation-completeness": "node scripts/check-translation-completeness.cjs"
+    "check-translation-completeness": "node scripts/check-translation-completeness.cjs",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx src/scripts/migrate.ts",
+    "db:studio": "drizzle-kit studio"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx,js}": [
@@ -103,6 +111,7 @@
     "@vitest/coverage-v8": "^3.2.3",
     "autoprefixer": "^10.4.21",
     "cross-env": "^7.0.3",
+    "drizzle-kit": "^0.31.1",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^18.0.0",
@@ -120,6 +129,7 @@
     "prettier": "^3.5.3",
     "stripe": "^18.2.1",
     "tailwindcss": "^4.1.8",
+    "tsx": "^4.20.3",
     "typescript": "^5.8.3",
     "vite-plugin-svgr": "^4.2.0",
     "vite-tsconfig-paths": "^5.1.4",

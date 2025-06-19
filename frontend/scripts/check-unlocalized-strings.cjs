@@ -377,7 +377,7 @@ function isCommonDevelopmentString(str) {
       "This conversation does not exist, or you do not have permission to access it." ||
     str === "Failed to fetch settings. Please try reloading." ||
     str ===
-      "If you tell OpenHands to start a web server, the app will appear here." ||
+      "If you tell MojoCode to start a web server, the app will appear here." ||
     str ===
       "Your browser doesn't support downloading files. Please use Chrome, Edge, or another browser that supports the File System Access API." ||
     str ===

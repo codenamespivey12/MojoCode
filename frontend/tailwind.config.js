@@ -12,8 +12,8 @@ export default {
         danger: "#EF4444", // bright red for errors
         success: "#10B981", // green for success states
         basic: "#6B7280", // neutral gray
-        tertiary: "#262626", // dark gray for inputs
-        "tertiary-light": "#404040", // lighter gray for borders
+        tertiary: "#3A3A3A", // lighter gray for better readability
+        "tertiary-light": "#525252", // even lighter gray for borders
         content: "#F5F5F5", // light text
         "content-2": "#FFFFFF", // white text
         // Additional red variants

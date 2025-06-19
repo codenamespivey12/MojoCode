@@ -6,24 +6,25 @@ import {
   useNavigate,
   useLocation,
 } from "react-router";
-import { useTranslation } from "react-i18next";
+import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/clerk-react";
 import { I18nKey } from "#/i18n/declaration";
+import { useTranslation } from "react-i18next";
 import i18n from "#/i18n";
-import { useGitHubAuthUrl } from "#/hooks/use-github-auth-url";
-import { useIsAuthed } from "#/hooks/query/use-is-authed";
+import { useBalance } from "#/hooks/query/use-balance";
+import { useSettings } from "#/hooks/query/use-settings";
 import { useConfig } from "#/hooks/query/use-config";
-import { Sidebar } from "#/components/features/sidebar/sidebar";
+import { useIsAuthed } from "#/hooks/query/use-is-authed";
+import { useGitHubAuthUrl } from "#/hooks/use-github-auth-url";
+import { useAutoLogin } from "#/hooks/use-auto-login";
+import { useAuthCallback } from "#/hooks/use-auth-callback";
+import { useMigrateUserConsent } from "#/hooks/use-migrate-user-consent";
+import { useIsOnTosPage } from "#/hooks/use-is-on-tos-page";
 import { AuthModal } from "#/components/features/waitlist/auth-modal";
 import { ReauthModal } from "#/components/features/waitlist/reauth-modal";
 import { AnalyticsConsentFormModal } from "#/components/features/analytics/analytics-consent-form-modal";
-import { useSettings } from "#/hooks/query/use-settings";
-import { useMigrateUserConsent } from "#/hooks/use-migrate-user-consent";
-import { useBalance } from "#/hooks/query/use-balance";
 import { SetupPaymentModal } from "#/components/features/payment/setup-payment-modal";
+import { Sidebar } from "#/components/features/sidebar/sidebar";
 import { displaySuccessToast } from "#/utils/custom-toast-handlers";
-import { useIsOnTosPage } from "#/hooks/use-is-on-tos-page";
-import { useAutoLogin } from "#/hooks/use-auto-login";
-import { useAuthCallback } from "#/hooks/use-auth-callback";
 import { LOCAL_STORAGE_KEYS } from "#/utils/local-storage";
 import { EmailVerificationGuard } from "#/components/features/guards/email-verification-guard";
 
@@ -195,39 +196,45 @@ export default function MainApp() {
     loginMethodExists;
 
   return (
-    <div
-      data-testid="root-layout"
-      className="bg-base p-3 h-screen md:min-w-[1024px] flex flex-col md:flex-row gap-3"
-    >
-      <Sidebar />
+    <>
+      <SignedIn>
+        <div
+          data-testid="root-layout"
+          className="bg-base p-3 h-screen md:min-w-[1024px] flex flex-col md:flex-row gap-3"
+        >
+          <Sidebar />
 
-      <div
-        id="root-outlet"
-        className="h-[calc(100%-50px)] md:h-full w-full relative overflow-auto"
-      >
-        <EmailVerificationGuard>
-          <Outlet />
-        </EmailVerificationGuard>
-      </div>
+          <div
+            id="root-outlet"
+            className="h-[calc(100%-50px)] md:h-full w-full relative overflow-auto"
+          >
+            <EmailVerificationGuard>
+              <Outlet />
+            </EmailVerificationGuard>
+          </div>
 
-      {renderAuthModal && (
-        <AuthModal
-          githubAuthUrl={effectiveGitHubAuthUrl}
-          appMode={config.data?.APP_MODE}
-        />
-      )}
-      {renderReAuthModal && <ReauthModal />}
-      {config.data?.APP_MODE === "oss" && consentFormIsOpen && (
-        <AnalyticsConsentFormModal
-          onClose={() => {
-            setConsentFormIsOpen(false);
-          }}
-        />
-      )}
+          {renderAuthModal && (
+             <AuthModal
+               githubAuthUrl={effectiveGitHubAuthUrl}
+             />
+           )}
+          {renderReAuthModal && <ReauthModal />}
+          {config.data?.APP_MODE === "oss" && consentFormIsOpen && (
+            <AnalyticsConsentFormModal
+              onClose={() => {
+                setConsentFormIsOpen(false);
+              }}
+            />
+          )}
 
-      {config.data?.FEATURE_FLAGS.ENABLE_BILLING &&
-        config.data?.APP_MODE === "saas" &&
-        settings?.IS_NEW_USER && <SetupPaymentModal />}
-    </div>
+          {config.data?.FEATURE_FLAGS.ENABLE_BILLING &&
+            config.data?.APP_MODE === "saas" &&
+            settings?.IS_NEW_USER && <SetupPaymentModal />}
+        </div>
+      </SignedIn>
+      <SignedOut>
+        <RedirectToSignIn />
+      </SignedOut>
+    </>
   );
 }

@@ -31,7 +31,7 @@ export function UserAvatar({ onClick, avatarUrl, isLoading }: UserAvatarProps) {
           aria-label={t(I18nKey.USER$AVATAR_PLACEHOLDER)}
           width={28}
           height={28}
-          className="text-neutral-400"
+          className="text-white"
         />
       )}
       {isLoading && <LoadingSpinner size="small" />}

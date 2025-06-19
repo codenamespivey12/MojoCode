@@ -72,7 +72,7 @@ export function ConversationPanel({ onClose }: ConversationPanelProps) {
       )}
       {conversations?.length === 0 && (
         <div className="flex flex-col items-center justify-center h-full">
-          <p className="text-neutral-400">
+          <p className="text-white">
             {t(I18nKey.CONVERSATION$NO_CONVERSATIONS)}
           </p>
         </div>

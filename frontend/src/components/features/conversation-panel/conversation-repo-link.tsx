@@ -8,7 +8,7 @@ export function ConversationRepoLink({
   return (
     <span
       data-testid="conversation-card-selected-repository"
-      className="text-xs text-neutral-400"
+      className="text-xs text-white"
     >
       {selectedRepository}
     </span>

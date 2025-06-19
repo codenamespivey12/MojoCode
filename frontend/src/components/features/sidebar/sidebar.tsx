@@ -13,6 +13,7 @@ import { ConversationPanelWrapper } from "../conversation-panel/conversation-pan
 import { useLogout } from "#/hooks/mutation/use-logout";
 import { useConfig } from "#/hooks/query/use-config";
 import { displayErrorToast } from "#/utils/custom-toast-handlers";
+import { ClerkAuth } from "#/components/auth/clerk-auth";
 
 export function Sidebar() {
   const location = useLocation();
@@ -82,6 +83,7 @@ export function Sidebar() {
 
           <div className="flex flex-row md:flex-col md:items-center gap-[26px] md:mb-4">
             <SettingsButton disabled={settings?.EMAIL_VERIFIED === false} />
+            <ClerkAuth />
             <UserActions
               user={
                 user.data ? { avatar_url: user.data.avatar_url } : undefined

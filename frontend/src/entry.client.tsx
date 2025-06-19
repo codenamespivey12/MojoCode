@@ -9,6 +9,7 @@ import { HydratedRouter } from "react-router/dom";
 import React, { startTransition, StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
 import { Provider } from "react-redux";
+import { ClerkProvider } from "@clerk/clerk-react";
 import posthog from "posthog-js";
 import "./i18n";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -16,6 +17,11 @@ import store from "./store";
 import OpenHands from "./api/open-hands";
 import { displayErrorToast } from "./utils/custom-toast-handlers";
 import { queryClient } from "./query-client-config";
+
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+if (!PUBLISHABLE_KEY) {
+  throw new Error("Missing Clerk Publishable Key");
+}
 
 function PosthogInit() {
   const [posthogClientKey, setPosthogClientKey] = React.useState<string | null>(
@@ -63,12 +69,14 @@ prepareApp().then(() =>
     hydrateRoot(
       document,
       <StrictMode>
-        <Provider store={store}>
-          <QueryClientProvider client={queryClient}>
-            <HydratedRouter />
-            <PosthogInit />
-          </QueryClientProvider>
-        </Provider>
+        <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
+          <Provider store={store}>
+            <QueryClientProvider client={queryClient}>
+              <HydratedRouter />
+              <PosthogInit />
+            </QueryClientProvider>
+          </Provider>
+        </ClerkProvider>
       </StrictMode>,
     );
   }),

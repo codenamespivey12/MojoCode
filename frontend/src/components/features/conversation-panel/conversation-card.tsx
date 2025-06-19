@@ -255,7 +255,7 @@ export function ConversationCard({
           {selectedRepository && (
             <ConversationRepoLink selectedRepository={selectedRepository} />
           )}
-          <p className="text-xs text-neutral-400">
+          <p className="text-xs text-white">
             <span>{t(I18nKey.CONVERSATION$CREATED)} </span>
             <time>
               {formatTimeDelta(new Date(createdAt || lastUpdatedAt))}{" "}
@@ -305,11 +305,11 @@ export function ConversationCard({
                     </div>
 
                     <div className="grid grid-cols-2 gap-2 pl-4 text-sm">
-                      <span className="text-neutral-400">Cache Hit:</span>
+                      <span className="text-white">Cache Hit:</span>
                       <span className="text-right">
                         {metrics.usage.cache_read_tokens.toLocaleString()}
                       </span>
-                      <span className="text-neutral-400">Cache Write:</span>
+                      <span className="text-white">Cache Write:</span>
                       <span className="text-right">
                         {metrics.usage.cache_write_tokens.toLocaleString()}
                       </span>
@@ -349,7 +349,7 @@ export function ConversationCard({
                         />
                       </div>
                       <div className="flex justify-end">
-                        <span className="text-xs text-neutral-400">
+                        <span className="text-xs text-white">
                           {metrics.usage.per_turn_token.toLocaleString()} /{" "}
                           {metrics.usage.context_window.toLocaleString()} (
                           {(
@@ -369,9 +369,7 @@ export function ConversationCard({
 
           {!metrics?.cost && !metrics?.usage && (
             <div className="rounded-md p-4 text-center">
-              <p className="text-neutral-400">
-                {t(I18nKey.CONVERSATION$NO_METRICS)}
-              </p>
+              <p className="text-white">{t(I18nKey.CONVERSATION$NO_METRICS)}</p>
             </div>
           )}
         </div>

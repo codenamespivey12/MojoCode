@@ -1,7 +1,7 @@
 import React from "react";
 import { ExtraProps } from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 // See https://github.com/remarkjs/react-markdown?tab=readme-ov-file#use-custom-components-syntax-highlight
 
@@ -24,11 +24,11 @@ export function code({
         <code
           className={className}
           style={{
-            backgroundColor: "#2a3038",
+            backgroundColor: "#f6f8fa",
             padding: "0.2em 0.4em",
             borderRadius: "4px",
-            color: "#e6edf3",
-            border: "1px solid #30363d",
+            color: "#24292f",
+            border: "1px solid #d0d7de",
           }}
         >
           {children}
@@ -39,11 +39,11 @@ export function code({
     return (
       <pre
         style={{
-          backgroundColor: "#2a3038",
+          backgroundColor: "#f6f8fa",
           padding: "1em",
           borderRadius: "4px",
-          color: "#e6edf3",
-          border: "1px solid #30363d",
+          color: "#24292f",
+          border: "1px solid #d0d7de",
           overflow: "auto",
         }}
       >
@@ -55,7 +55,7 @@ export function code({
   return (
     <SyntaxHighlighter
       className="rounded-lg"
-      style={vscDarkPlus}
+      style={oneLight}
       language={match?.[1]}
       PreTag="div"
     >

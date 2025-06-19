@@ -15,7 +15,7 @@ export function ChatSuggestions({ onSuggestionsClick }: ChatSuggestionsProps) {
     <div className="flex flex-col gap-6 h-full px-4 items-center justify-center">
       <div className="flex flex-col items-center p-4 bg-tertiary rounded-xl w-full">
         <BuildIt width={45} height={54} />
-        <span className="font-semibold text-[20px] leading-6 -tracking-[0.01em] gap-1">
+        <span className="font-semibold text-[20px] leading-6 -tracking-[0.01em] gap-1 text-white">
           {t(I18nKey.LANDING$TITLE)}
         </span>
       </div>

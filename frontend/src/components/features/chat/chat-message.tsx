@@ -59,7 +59,7 @@ export function ChatMessage({
         onClick={handleCopyToClipboard}
         mode={isCopy ? "copied" : "copy"}
       />
-      <div className="text-sm break-words">
+      <div className="text-sm break-words text-white">
         <Markdown
           components={{
             code,
