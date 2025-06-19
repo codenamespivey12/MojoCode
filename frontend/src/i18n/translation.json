@@ -1608,7 +1608,7 @@
     "en": "Error accepting Terms of Service"
   },
   "TIPS$CUSTOMIZE_MICROAGENT": {
-    "en": "You can customize MojoCode for your repo using an available microagent. Ask MojoCode to put a description of the repo, including how to run the code, into .openhands/microagents/repo.md."
+    "en": "Why write clean code when you can just leave cryptic comments for future generations?"
   },
   "CONVERSATION$SHOW_MICROAGENTS": {
     "en": "Show Available Microagents"
