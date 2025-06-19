@@ -27,7 +27,6 @@ from openhands.events.observation import (
     Observation,
 )
 from openhands.events.stream import EventStreamSubscriber
-from openhands.integrations.service_types import ProviderType
 from openhands.resolver.interfaces.issue import Issue
 from openhands.resolver.interfaces.issue_definitions import (
     ServiceContextIssue,
@@ -37,7 +36,6 @@ from openhands.resolver.issue_handler_factory import IssueHandlerFactory
 from openhands.resolver.resolver_output import ResolverOutput
 from openhands.resolver.utils import (
     codeact_user_response,
-    get_unique_uid,
     identify_token,
     reset_logger_for_multiprocessing,
 )
@@ -49,8 +47,6 @@ AGENT_CLASS = 'CodeActAgent'
 
 
 class IssueResolver:
-    GITLAB_CI = os.getenv('GITLAB_CI') == 'true'
-
     def __init__(self, args: Namespace) -> None:
         """Initialize the IssueResolver with the given parameters.
         Params initialized:
@@ -76,12 +72,7 @@ class IssueResolver:
             raise ValueError('Invalid repository format. Expected owner/repo')
         owner, repo = parts
 
-        token = (
-            args.token
-            or os.getenv('GITHUB_TOKEN')
-            or os.getenv('GITLAB_TOKEN')
-            or os.getenv('BITBUCKET_TOKEN')
-        )
+        token = args.token or os.getenv('GITHUB_TOKEN')
         username = args.username if args.username else os.getenv('GIT_USERNAME')
         if not username:
             raise ValueError('Username is required.')
@@ -122,15 +113,7 @@ class IssueResolver:
         ) as f:
             conversation_instructions_prompt_template = f.read()
 
-        base_domain = args.base_domain
-        if base_domain is None:
-            base_domain = (
-                'github.com'
-                if platform == ProviderType.GITHUB
-                else 'gitlab.com'
-                if platform == ProviderType.GITLAB
-                else 'bitbucket.org'
-            )
+        base_domain = args.base_domain or 'github.com'
 
         self.output_dir = args.output_dir
         self.issue_type = issue_type
@@ -240,15 +223,6 @@ class IssueResolver:
             timeout=300,
         )
 
-        # Configure sandbox for GitLab CI environment
-        if cls.GITLAB_CI:
-            sandbox_config.local_runtime_url = os.getenv(
-                'LOCAL_RUNTIME_URL', 'http://localhost'
-            )
-            user_id = os.getuid() if hasattr(os, 'getuid') else 1000
-            if user_id == 0:
-                sandbox_config.user_id = get_unique_uid()
-
         openhands_config.sandbox.base_container_image = (
             sandbox_config.base_container_image
         )
@@ -281,12 +255,6 @@ class IssueResolver:
         logger.info(obs, extra={'msg_type': 'OBSERVATION'})
         if not isinstance(obs, CmdOutputObservation) or obs.exit_code != 0:
             raise RuntimeError(f'Failed to change directory to /workspace.\n{obs}')
-
-        if self.platform == ProviderType.GITLAB and self.GITLAB_CI:
-            action = CmdRunAction(command='sudo chown -R 1001:0 /workspace/*')
-            logger.info(action, extra={'msg_type': 'ACTION'})
-            obs = runtime.run_action(action)
-            logger.info(obs, extra={'msg_type': 'OBSERVATION'})
 
         action = CmdRunAction(command='git config --global core.pager ""')
         logger.info(action, extra={'msg_type': 'ACTION'})
@@ -344,10 +312,7 @@ class IssueResolver:
         if not isinstance(obs, CmdOutputObservation) or obs.exit_code != 0:
             raise RuntimeError(f'Failed to set git config. Observation: {obs}')
 
-        if self.platform == ProviderType.GITLAB and self.GITLAB_CI:
-            action = CmdRunAction(command='sudo git add -A')
-        else:
-            action = CmdRunAction(command='git add -A')
+        action = CmdRunAction(command='git add -A')
 
         logger.info(action, extra={'msg_type': 'ACTION'})
         obs = runtime.run_action(action)

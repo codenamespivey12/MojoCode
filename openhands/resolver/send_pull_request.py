@@ -11,9 +11,7 @@ from openhands.core.config import LLMConfig
 from openhands.core.logger import openhands_logger as logger
 from openhands.integrations.service_types import ProviderType
 from openhands.llm.llm import LLM
-from openhands.resolver.interfaces.bitbucket import BitbucketIssueHandler
 from openhands.resolver.interfaces.github import GithubIssueHandler
-from openhands.resolver.interfaces.gitlab import GitlabIssueHandler
 from openhands.resolver.interfaces.issue import Issue
 from openhands.resolver.interfaces.issue_definitions import ServiceContextIssue
 from openhands.resolver.io_utils import (
@@ -236,7 +234,7 @@ def send_pull_request(
     pr_title: str | None = None,
     base_domain: str | None = None,
 ) -> str:
-    """Send a pull request to a GitHub, GitLab, or Bitbucket repository.
+    """Send a pull request to a GitHub repository.
 
     Args:
         issue: The issue to send the pull request for
@@ -250,37 +248,20 @@ def send_pull_request(
         target_branch: The target branch to create the pull request against (defaults to repository default branch)
         reviewer: The username of the reviewer to assign
         pr_title: Custom title for the pull request (optional)
-        base_domain: The base domain for the git server (defaults to "github.com" for GitHub, "gitlab.com" for GitLab, and "bitbucket.org" for Bitbucket)
+        base_domain: The base domain for the git server (defaults to "github.com")
     """
     if pr_type not in ['branch', 'draft', 'ready']:
         raise ValueError(f'Invalid pr_type: {pr_type}')
 
     # Determine default base_domain based on platform
     if base_domain is None:
-        if platform == ProviderType.GITHUB:
-            base_domain = 'github.com'
-        elif platform == ProviderType.GITLAB:
-            base_domain = 'gitlab.com'
-        else:  # platform == ProviderType.BITBUCKET
-            base_domain = 'bitbucket.org'
+        base_domain = 'github.com'
 
     # Create the appropriate handler based on platform
     handler = None
     if platform == ProviderType.GITHUB:
         handler = ServiceContextIssue(
             GithubIssueHandler(issue.owner, issue.repo, token, username, base_domain),
-            None,
-        )
-    elif platform == ProviderType.GITLAB:
-        handler = ServiceContextIssue(
-            GitlabIssueHandler(issue.owner, issue.repo, token, username, base_domain),
-            None,
-        )
-    elif platform == ProviderType.BITBUCKET:
-        handler = ServiceContextIssue(
-            BitbucketIssueHandler(
-                issue.owner, issue.repo, token, username, base_domain
-            ),
             None,
         )
     else:
@@ -408,7 +389,7 @@ def update_existing_pull_request(
 
     # Determine default base_domain based on platform
     if base_domain is None:
-        base_domain = 'github.com' if platform == ProviderType.GITHUB else 'gitlab.com'
+        base_domain = 'github.com'
 
     handler = None
     if platform == ProviderType.GITHUB:
@@ -416,11 +397,8 @@ def update_existing_pull_request(
             GithubIssueHandler(issue.owner, issue.repo, token, username, base_domain),
             llm_config,
         )
-    else:  # platform == Platform.GITLAB
-        handler = ServiceContextIssue(
-            GitlabIssueHandler(issue.owner, issue.repo, token, username, base_domain),
-            llm_config,
-        )
+    else:
+        raise ValueError(f'Unsupported platform: {platform}')
 
     branch_name = issue.head_branch
 
@@ -565,9 +543,7 @@ def process_single_issue(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(
-        description='Send a pull request to Github or Gitlab.'
-    )
+    parser = argparse.ArgumentParser(description='Send a pull request to GitHub.')
     parser.add_argument(
         '--selected-repo',
         type=str,
