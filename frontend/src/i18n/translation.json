@@ -296,9 +296,6 @@
   "WORKSPACE$BROWSER_TAB_LABEL": {
     "en": "Browser"
   },
-  "WORKSPACE$JUPYTER_TAB_LABEL": {
-    "en": "Jupyter"
-  },
   "WORKSPACE$CODE_EDITOR_TAB_LABEL": {
     "en": "Code Editor"
   },
@@ -853,9 +850,6 @@
   },
   "USER$ACCOUNT_SETTINGS": {
     "en": "Account settings"
-  },
-  "JUPYTER$OUTPUT_LABEL": {
-    "en": "STDOUT/STDERR"
   },
   "BUTTON$STOP": {
     "en": "Stop"
