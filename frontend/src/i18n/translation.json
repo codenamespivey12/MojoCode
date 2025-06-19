@@ -1656,16 +1656,16 @@
     "en": "You can run MojoCode in headless mode to create automations, like responding to 500 errors by automatically creating a fix."
   },
   "TIPS$CLI_MODE": {
-    "en": "You can run MojoCode as a CLI, similar to Claude Code."
+    "en": "You can run MojoCode as a CLI.. well eventually you will be able to."
   },
   "TIPS$GITHUB_HOOK": {
-    "en": "MojoCode Cloud offers a GitHub hook, so you can say \"@openhands fix the merge conflicts\" or \"@openhands fix the feedback on this PR\" right inside the GitHub UI."
+    "en": "Mojo suggests frequent commits and pushes."
   },
   "TIPS$BLOG_SIGNUP": {
     "en": "Sign up for the MojoCode Blog to hear about new features and the latest releases."
   },
   "TIPS$API_USAGE": {
-    "en": "MojoCode has an API! Create MojoCode conversations with simple cURL command."
+    "en": "MojoCode will have an API one day.."
   },
   "TIPS$LEARN_MORE": {
     "en": "Learn more"
