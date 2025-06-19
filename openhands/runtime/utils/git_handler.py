@@ -212,6 +212,114 @@ class GitHandler:
             'original': original,
         }
 
+    def clone_repo(self, repo_url: str, local_path: str) -> bool:
+        """
+        Clones a repository from repo_url to local_path.
+
+        Args:
+            repo_url (str): The URL of the repository to clone.
+            local_path (str): The local directory to clone into.
+
+        Returns:
+            bool: True if cloning was successful, False otherwise.
+        """
+        # self.execute expects command as a string.
+        # We need to ensure local_path is handled correctly.
+        # If local_path is "my_repo", it clones into a directory named "my_repo" in cwd.
+        # If local_path is "/tmp/my_repo", it clones into "/tmp/my_repo".
+        # The `git clone` command itself handles creation of the target directory.
+        # The cwd for clone should ideally be the parent of local_path if local_path is absolute,
+        # or self.cwd if local_path is relative.
+        # For simplicity, we'll assume local_path is the target directory name or full path.
+        import os
+        path_to_clone_into = os.path.dirname(local_path)
+        repo_name = os.path.basename(local_path)
+
+        if not path_to_clone_into: # local_path is just a name, not a path
+            cwd = self.cwd
+        else:
+            cwd = path_to_clone_into
+            # git clone will create the repo_name directory in cwd
+
+        # If local_path was just a name (e.g. "my_repo"), then repo_name will be "my_repo"
+        # and cwd will be self.cwd.
+        # If local_path was "/abs/path/to/my_repo", then repo_name will be "my_repo"
+        # and cwd will be "/abs/path/to".
+        # `git clone <url> <name>` will create <name> inside cwd.
+        cmd = f'git clone {repo_url} {repo_name}'
+        result = self.execute(cmd, cwd=cwd)
+        return result.exit_code == 0
+
+    def init_repo(self, local_path: str) -> bool:
+        """
+        Initializes a new Git repository in the specified local path.
+
+        Args:
+            local_path (str): The directory to initialize as a Git repository.
+
+        Returns:
+            bool: True if initialization was successful, False otherwise.
+        """
+        cmd = 'git init'
+        result = self.execute(cmd, cwd=local_path)
+        return result.exit_code == 0
+
+    def add_all_and_commit(self, local_path: str, message: str) -> bool:
+        """
+        Adds all changes and commits them with the given message.
+
+        Args:
+            local_path (str): The path to the Git repository.
+            message (str): The commit message.
+
+        Returns:
+            bool: True if add and commit were successful, False otherwise.
+        """
+        add_cmd = 'git add .'
+        add_result = self.execute(add_cmd, cwd=local_path)
+        if add_result.exit_code != 0:
+            return False
+
+        # It's generally safer if self.execute could take a list of args
+        # to avoid shell injection with complex messages.
+        # Assuming self.execute handles the command string appropriately or
+        # that messages are simple enough.
+        commit_cmd = f'git commit -m "{message}"'
+        commit_result = self.execute(commit_cmd, cwd=local_path)
+        return commit_result.exit_code == 0
+
+    def add_remote(self, local_path: str, remote_name: str, remote_url: str) -> bool:
+        """
+        Adds a remote to the Git repository.
+
+        Args:
+            local_path (str): The path to the Git repository.
+            remote_name (str): The name for the remote.
+            remote_url (str): The URL for the remote.
+
+        Returns:
+            bool: True if adding remote was successful, False otherwise.
+        """
+        cmd = f'git remote add {remote_name} {remote_url}'
+        result = self.execute(cmd, cwd=local_path)
+        return result.exit_code == 0
+
+    def push_to_remote(self, local_path: str, remote_name: str, branch_name: str = 'main') -> bool:
+        """
+        Pushes changes to the specified remote and branch.
+
+        Args:
+            local_path (str): The path to the Git repository.
+            remote_name (str): The name of the remote to push to.
+            branch_name (str): The name of the branch to push. Defaults to 'main'.
+
+        Returns:
+            bool: True if push was successful, False otherwise.
+        """
+        cmd = f'git push -u {remote_name} {branch_name}'
+        result = self.execute(cmd, cwd=local_path)
+        return result.exit_code == 0
+
 
 def parse_git_changes(changes_list: list[str]) -> list[dict[str, str]]:
     """

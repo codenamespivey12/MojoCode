@@ -51,6 +51,11 @@
               "usage/how-to/headless-mode",
               "usage/how-to/github-action",
               {
+                "type": "doc",
+                "id": "usage/how-to/github-import-export",
+                "label": "Import/Export GitHub Repos"
+              },
+              {
                 "group": "Advanced Configuration",
                 "pages": [
                 {

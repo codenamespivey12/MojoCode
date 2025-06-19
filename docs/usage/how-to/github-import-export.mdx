@@ -1,0 +1,57 @@
+---
+title: Importing and Exporting GitHub Repositories
+description: Learn how to import existing GitHub repositories into OpenHands and export your OpenHands projects to new GitHub repositories.
+---
+
+OpenHands allows you to easily work with GitHub repositories by importing them into your workspace and exporting your projects to new repositories on GitHub.
+
+## Prerequisites
+
+Before using the import/export features, ensure you have:
+1.  Connected your GitHub account to OpenHands. You can do this in **Settings > Git Integration**.
+2.  For exporting, ensure OpenHands has the necessary permissions to create repositories on your behalf. This is typically granted during the GitHub App installation or OAuth consent.
+
+## Importing a GitHub Repository
+
+You can clone any public GitHub repository directly into your OpenHands workspace. This is useful for bringing in existing codebases to work with.
+
+1.  **Navigate to Settings:** Go to the main settings area of the application.
+2.  **Select Git Integration:** Open the Git integration or Git settings tab.
+3.  **Find the "Import GitHub Repository" Section:**
+    *   You will see an input field labeled "GitHub Repository URL (HTTPS)".
+4.  **Enter the Repository URL:**
+    *   Paste the full HTTPS URL of the GitHub repository you wish to import (e.g., `https://github.com/someuser/somerepo.git`). The URL must end with `.git`.
+5.  **Click "Import Repository":**
+    *   OpenHands will clone the repository into your user-specific workspace.
+    *   You'll receive a notification once the import is complete. The repository will then be available in your workspace, typically at a path like `your_workspace_root/somerepo`.
+
+## Exporting a Project to a New GitHub Repository
+
+You can take a project from your OpenHands workspace and publish it as a new repository on your connected GitHub account.
+
+1.  **Navigate to Settings:** Go to the main settings area of the application.
+2.  **Select Git Integration:** Open the Git integration or Git settings tab.
+3.  **Find the "Export Project to New GitHub Repository" Section:**
+    *   You will see fields for:
+        *   **New GitHub Repository Name:** The name for your new repository on GitHub (e.g., `my-new-openhands-project`).
+        *   **Project Path in Workspace:** The path to your project within your OpenHands workspace, relative to your workspace root (e.g., if your project is at `/workspace/your_user_id/my_project_folder`, you would enter `my_project_folder`).
+        *   **Repository Description (Optional):** A brief description for your new GitHub repository.
+        *   **Private Repository:** Check this box if you want the new GitHub repository to be private. It will be public by default.
+4.  **Fill in the Details:** Provide the required information.
+5.  **Click "Export to New GitHub Repo":**
+    *   OpenHands will:
+        1.  Initialize a Git repository in your specified project path (if it's not already one).
+        2.  Commit all current files in that project.
+        3.  Create a new repository on your GitHub account with the specified name, description, and privacy setting.
+        4.  Push your project's files to the new GitHub repository.
+    *   You'll receive a notification upon completion, usually including a link to the newly created GitHub repository.
+
+## Troubleshooting
+
+*   **Import Failed:**
+    *   Ensure the URL is correct, publicly accessible, and ends with `.git`.
+    *   Check for network issues.
+*   **Export Failed:**
+    *   Ensure the Project Path in Workspace is correct and the project exists.
+    *   Verify that OpenHands has permission to create repositories for your GitHub account.
+    *   The chosen repository name might already exist or be invalid. Try a different name.
