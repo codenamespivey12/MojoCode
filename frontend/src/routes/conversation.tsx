@@ -13,7 +13,6 @@ import { Controls } from "#/components/features/controls/controls";
 import { clearTerminal } from "#/state/command-slice";
 import { useEffectOnce } from "#/hooks/use-effect-once";
 import GlobeIcon from "#/icons/globe.svg?react";
-import JupyterIcon from "#/icons/jupyter.svg?react";
 import TerminalIcon from "#/icons/terminal.svg?react";
 import { clearJupyter } from "#/state/jupyter-slice";
 
@@ -164,7 +163,6 @@ function AppContent() {
                 to: "terminal",
                 icon: <TerminalIcon />,
               },
-              { label: "Jupyter", to: "jupyter", icon: <JupyterIcon /> },
               {
                 label: <ServedAppLabel />,
                 to: "served",
