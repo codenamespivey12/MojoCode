@@ -1,7 +1,19 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
+import { supabase } from "#/utils/supabase-client";
 
 export const openHands = axios.create({
   baseURL: `${window.location.protocol}//${import.meta.env.VITE_BACKEND_BASE_URL || window?.location.host}`,
+});
+
+openHands.interceptors.request.use(async (config) => {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session?.access_token) {
+    config.headers = config.headers || {};
+    // eslint-disable-next-line no-param-reassign
+    (config.headers as Record<string, string>).Authorization = `Bearer ${session.access_token}`;
+  }
+  config.withCredentials = true;
+  return config;
 });
 
 // Helper function to check if a response contains an email verification error

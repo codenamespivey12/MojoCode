@@ -5,6 +5,7 @@ import {
   Outlet,
   useNavigate,
   useLocation,
+  Navigate,
 } from "react-router";
 import { useTranslation } from "react-i18next";
 import { I18nKey } from "#/i18n/declaration";
@@ -13,7 +14,6 @@ import { useGitHubAuthUrl } from "#/hooks/use-github-auth-url";
 import { useIsAuthed } from "#/hooks/query/use-is-authed";
 import { useConfig } from "#/hooks/query/use-config";
 import { Sidebar } from "#/components/features/sidebar/sidebar";
-import { AuthModal } from "#/components/features/waitlist/auth-modal";
 import { ReauthModal } from "#/components/features/waitlist/reauth-modal";
 import { AnalyticsConsentFormModal } from "#/components/features/analytics/analytics-consent-form-modal";
 import { useSettings } from "#/hooks/query/use-settings";
@@ -178,13 +178,13 @@ export default function MainApp() {
     setLoginMethodExists(checkLoginMethodExists());
   }, [isAuthed, checkLoginMethodExists]);
 
-  const renderAuthModal =
+  const redirectToLogin =
     !isAuthed &&
     !isAuthError &&
     !isFetchingAuth &&
     !isOnTosPage &&
     config.data?.APP_MODE === "saas" &&
-    !loginMethodExists; // Don't show auth modal if login method exists in local storage
+    !loginMethodExists;
 
   const renderReAuthModal =
     !isAuthed &&
@@ -210,12 +210,7 @@ export default function MainApp() {
         </EmailVerificationGuard>
       </div>
 
-      {renderAuthModal && (
-        <AuthModal
-          githubAuthUrl={effectiveGitHubAuthUrl}
-          appMode={config.data?.APP_MODE}
-        />
-      )}
+      {redirectToLogin && <Navigate to="/login" replace />}
       {renderReAuthModal && <ReauthModal />}
       {config.data?.APP_MODE === "oss" && consentFormIsOpen && (
         <AnalyticsConsentFormModal
