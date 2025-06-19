@@ -13,22 +13,24 @@ export function RandomTip() {
   }, []);
 
   return (
-    <p className="text-content">
+    <div className="text-content">
       <h4 className="font-bold">{t(I18nKey.TIPS$PROTIP)}:</h4>
-      {t(randomTip.key)}
-      {randomTip.link && (
-        <>
-          {" "}
-          <a
-            href={randomTip.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline text-content hover:text-content-2"
-          >
-            {t(I18nKey.TIPS$LEARN_MORE)}
-          </a>
-        </>
-      )}
-    </p>
+      <p>
+        {t(randomTip.key)}
+        {randomTip.link && (
+          <>
+            {" "}
+            <a
+              href={randomTip.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline text-content hover:text-content-2"
+            >
+              {t(I18nKey.TIPS$LEARN_MORE)}
+            </a>
+          </>
+        )}
+      </p>
+    </div>
   );
 }
