@@ -508,6 +508,62 @@ class GitHubService(BaseGitService, GitService):
         # Return the HTML URL of the created PR
         return response['html_url']
 
+    async def create_repository(
+        self, repo_name: str, description: str = "", private: bool = False
+    ) -> dict:
+        """
+        Creates a new repository on the authenticated user's account.
+
+        Args:
+            repo_name: The name of the repository.
+            description: A short description of the repository.
+            private: Whether the repository should be private.
+
+        Returns:
+            A dictionary containing information about the created repository,
+            such as its HTML URL and clone URL, or an error dictionary.
+        """
+        endpoint = f'{self.BASE_URL}/user/repos'
+        payload = {
+            "name": repo_name,
+            "description": description,
+            "private": private,
+        }
+        try:
+            # _make_request expects params for GET/HEAD/DELETE and json for POST/PUT/PATCH
+            # Since this is a POST request, we should pass payload as json
+            async with httpx.AsyncClient() as client:
+                github_headers = await self._get_github_headers()
+                response = await client.post(endpoint, json=payload, headers=github_headers)
+                response.raise_for_status()  # Raise an exception for bad status codes
+
+            repo_info = response.json()
+            return {
+                "html_url": repo_info.get("html_url"),
+                "clone_url": repo_info.get("clone_url"),
+                "full_name": repo_info.get("full_name"),
+                "id": repo_info.get("id"),
+                "message": "Repository created successfully."
+            }
+        except httpx.HTTPStatusError as e:
+            logger.error(
+                f"HTTP error creating repository {repo_name}: {e.response.status_code} {e.response.text}"
+            )
+            try:
+                error_details = e.response.json()
+                message = error_details.get("message", "No specific error message from GitHub.")
+                errors = error_details.get("errors", [])
+                error_summary = f"{message} Details: {errors}"
+            except ValueError: # If response is not JSON
+                error_summary = e.response.text
+            return {"error": f"Failed to create repository: {e.response.status_code}", "details": error_summary}
+        except httpx.RequestError as e: # More generic httpx network error
+            logger.error(f"Error creating repository {repo_name}: {e}")
+            return {"error": "Failed to create repository due to a network or request issue."}
+        except Exception as e: # Catch any other unexpected errors
+            logger.error(f"Unexpected error creating repository {repo_name}: {e}")
+            return {"error": "An unexpected error occurred."}
+
 
 github_service_cls = os.environ.get(
     'OPENHANDS_GITHUB_SERVICE_CLS',
