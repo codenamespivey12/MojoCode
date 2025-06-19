@@ -13,7 +13,7 @@ export function RandomTip() {
   }, []);
 
   return (
-    <p>
+    <p className="text-content">
       <h4 className="font-bold">{t(I18nKey.TIPS$PROTIP)}:</h4>
       {t(randomTip.key)}
       {randomTip.link && (
@@ -23,7 +23,7 @@ export function RandomTip() {
             href={randomTip.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="underline"
+            className="underline text-content hover:text-content-2"
           >
             {t(I18nKey.TIPS$LEARN_MORE)}
           </a>

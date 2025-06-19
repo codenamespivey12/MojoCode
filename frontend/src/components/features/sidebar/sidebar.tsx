@@ -1,7 +1,5 @@
 import React from "react";
 import { useLocation } from "react-router";
-import { useGitUser } from "#/hooks/query/use-git-user";
-import { UserActions } from "./user-actions";
 import { AllHandsLogoButton } from "#/components/shared/buttons/all-hands-logo-button";
 import { NewProjectButton } from "#/components/shared/buttons/new-project-button";
 import { SettingsButton } from "#/components/shared/buttons/settings-button";
@@ -10,14 +8,12 @@ import { SettingsModal } from "#/components/shared/modals/settings/settings-moda
 import { useSettings } from "#/hooks/query/use-settings";
 import { ConversationPanel } from "../conversation-panel/conversation-panel";
 import { ConversationPanelWrapper } from "../conversation-panel/conversation-panel-wrapper";
-import { useLogout } from "#/hooks/mutation/use-logout";
 import { useConfig } from "#/hooks/query/use-config";
 import { displayErrorToast } from "#/utils/custom-toast-handlers";
-import { ClerkAuth } from "#/components/auth/clerk-auth";
+import { UserActions } from "./user-actions";
 
 export function Sidebar() {
   const location = useLocation();
-  const user = useGitUser();
   const { data: config } = useConfig();
   const {
     data: settings,
@@ -25,7 +21,6 @@ export function Sidebar() {
     isError: settingsIsError,
     isFetching: isFetchingSettings,
   } = useSettings();
-  const { mutate: logout } = useLogout();
 
   const [settingsModalIsOpen, setSettingsModalIsOpen] = React.useState(false);
 
@@ -83,14 +78,7 @@ export function Sidebar() {
 
           <div className="flex flex-row md:flex-col md:items-center gap-[26px] md:mb-4">
             <SettingsButton disabled={settings?.EMAIL_VERIFIED === false} />
-            <ClerkAuth />
-            <UserActions
-              user={
-                user.data ? { avatar_url: user.data.avatar_url } : undefined
-              }
-              onLogout={logout}
-              isLoading={user.isFetching}
-            />
+            <UserActions />
           </div>
         </nav>
 
