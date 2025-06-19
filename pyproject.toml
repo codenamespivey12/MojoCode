@@ -47,6 +47,7 @@ pyjwt = "^2.9.0"
 dirhash = "*"
 tornado = "*"
 python-dotenv = "*"
+supabase = "*"
 rapidfuzz = "^3.9.0"
 whatthepatch = "^1.0.6"
 protobuf = "^5.0.0,<6.0.0"                         # Updated to support newer opentelemetry
