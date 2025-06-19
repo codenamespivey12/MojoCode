@@ -149,7 +149,7 @@ function LlmSettingsScreen() {
   };
 
   const formAction = (formData: FormData) => {
-    if (view === "basic") basicFormAction(formData);
+    if (view === "basic") basicFormAction();
     else advancedFormAction(formData);
   };
 

@@ -2,19 +2,19 @@ import { drizzle } from "drizzle-orm/neon-http";
 import { neon } from "@neondatabase/serverless";
 import { migrate } from "drizzle-orm/neon-http/migrator";
 import { config } from "dotenv";
+import i18n from "../i18n";
+import { I18nKey } from "../i18n/declaration";
 
 config();
 
 const databaseUrl = process.env.DATABASE_URL || process.env.VITE_DATABASE_URL;
 
 if (!databaseUrl) {
-  console.error(
-    "DATABASE_URL or VITE_DATABASE_URL environment variable is required",
-  );
+  process.stderr.write(`${i18n.t(I18nKey.MIGRATION$URL_REQUIRED)}\n`);
   process.exit(1);
 }
 
-console.log("🚀 Starting database migrations...");
+process.stdout.write(`${i18n.t(I18nKey.MIGRATION$STARTING)}\n`);
 
 try {
   const sql = neon(databaseUrl);
@@ -22,9 +22,11 @@ try {
 
   await migrate(db, { migrationsFolder: "./drizzle" });
 
-  console.log("✅ Migrations completed successfully!");
+  process.stdout.write(`${i18n.t(I18nKey.MIGRATION$SUCCESS)}\n`);
 } catch (error) {
-  console.error("❌ Migration failed:", error);
+  process.stderr.write(
+    `${i18n.t(I18nKey.MIGRATION$FAILED)} ${String(error)}\n`,
+  );
   process.exit(1);
 }
 

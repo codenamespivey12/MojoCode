@@ -3,6 +3,8 @@ export type ProviderToken = {
   host: string | null;
 };
 
+export type Provider = "github" | "gitlab";
+
 export type MCPSSEServer = {
   url: string;
   api_key?: string;
@@ -30,9 +32,7 @@ export type Settings = {
   CONFIRMATION_MODE: boolean;
   SECURITY_ANALYZER: string;
   REMOTE_RUNTIME_RESOURCE_FACTOR: number | null;
-  PROVIDER_TOKENS_SET: {
-    github: string | null;
-  };
+  PROVIDER_TOKENS_SET: Partial<Record<Provider, string | null>>;
   ENABLE_DEFAULT_CONDENSER: boolean;
   ENABLE_SOUND_NOTIFICATIONS: boolean;
   ENABLE_PROACTIVE_CONVERSATION_STARTERS: boolean;

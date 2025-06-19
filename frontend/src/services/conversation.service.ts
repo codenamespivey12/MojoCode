@@ -1,7 +1,12 @@
-import { db } from '../lib/db';
-import { conversations, messages, type Conversation, type Message, type NewConversation, type NewMessage } from '../lib/schema';
-import { eq, desc, and } from 'drizzle-orm';
-import { useUser } from '@clerk/clerk-react';
+import { eq, desc, and } from "drizzle-orm";
+import { useUser } from "@clerk/clerk-react";
+import { db } from "../lib/db";
+import {
+  conversations,
+  messages,
+  type Conversation,
+  type Message,
+} from "../lib/schema";
 
 export class ConversationService {
   /**
@@ -10,7 +15,7 @@ export class ConversationService {
   static async createConversation(
     userId: string,
     title: string,
-    metadata?: Record<string, any>
+    metadata?: Record<string, unknown>,
   ): Promise<Conversation> {
     const [conversation] = await db
       .insert(conversations)
@@ -28,7 +33,7 @@ export class ConversationService {
    * Get all conversations for a user
    */
   static async getUserConversations(userId: string): Promise<Conversation[]> {
-    return await db
+    return db
       .select()
       .from(conversations)
       .where(eq(conversations.userId, userId))
@@ -40,7 +45,7 @@ export class ConversationService {
    */
   static async getConversationWithMessages(
     conversationId: string,
-    userId: string
+    userId: string,
   ): Promise<(Conversation & { messages: Message[] }) | null> {
     const conversation = await db
       .select()
@@ -48,8 +53,8 @@ export class ConversationService {
       .where(
         and(
           eq(conversations.id, conversationId),
-          eq(conversations.userId, userId)
-        )
+          eq(conversations.userId, userId),
+        ),
       )
       .limit(1);
 
@@ -72,9 +77,9 @@ export class ConversationService {
    */
   static async addMessage(
     conversationId: string,
-    role: 'user' | 'assistant' | 'system',
+    role: "user" | "assistant" | "system",
     content: string,
-    metadata?: Record<string, any>
+    metadata?: Record<string, unknown>,
   ): Promise<Message> {
     const [message] = await db
       .insert(messages)
@@ -101,7 +106,7 @@ export class ConversationService {
   static async updateConversationTitle(
     conversationId: string,
     userId: string,
-    title: string
+    title: string,
   ): Promise<Conversation | null> {
     const [updated] = await db
       .update(conversations)
@@ -109,8 +114,8 @@ export class ConversationService {
       .where(
         and(
           eq(conversations.id, conversationId),
-          eq(conversations.userId, userId)
-        )
+          eq(conversations.userId, userId),
+        ),
       )
       .returning();
 
@@ -122,15 +127,15 @@ export class ConversationService {
    */
   static async deleteConversation(
     conversationId: string,
-    userId: string
+    userId: string,
   ): Promise<boolean> {
     const result = await db
       .delete(conversations)
       .where(
         and(
           eq(conversations.id, conversationId),
-          eq(conversations.userId, userId)
-        )
+          eq(conversations.userId, userId),
+        ),
       )
       .returning();
 
@@ -149,8 +154,8 @@ export class ConversationService {
       .from(conversations)
       .where(eq(conversations.userId, userId));
 
-    const conversationIds = userConversations.map(c => c.id);
-    
+    const conversationIds = userConversations.map((c) => c.id);
+
     let totalMessages = 0;
     if (conversationIds.length > 0) {
       const messageCount = await db
@@ -174,12 +179,12 @@ export function useConversationService() {
   const { user } = useUser();
 
   if (!user) {
-    throw new Error('User must be authenticated to use conversation service');
+    throw new Error("User must be authenticated to use conversation service");
   }
 
   return {
     userId: user.id,
-    createConversation: (title: string, metadata?: Record<string, any>) =>
+    createConversation: (title: string, metadata?: Record<string, unknown>) =>
       ConversationService.createConversation(user.id, title, metadata),
     getUserConversations: () =>
       ConversationService.getUserConversations(user.id),
@@ -187,12 +192,17 @@ export function useConversationService() {
       ConversationService.getConversationWithMessages(conversationId, user.id),
     addMessage: (
       conversationId: string,
-      role: 'user' | 'assistant' | 'system',
+      role: "user" | "assistant" | "system",
       content: string,
-      metadata?: Record<string, any>
-    ) => ConversationService.addMessage(conversationId, role, content, metadata),
+      metadata?: Record<string, unknown>,
+    ) =>
+      ConversationService.addMessage(conversationId, role, content, metadata),
     updateConversationTitle: (conversationId: string, title: string) =>
-      ConversationService.updateConversationTitle(conversationId, user.id, title),
+      ConversationService.updateConversationTitle(
+        conversationId,
+        user.id,
+        title,
+      ),
     deleteConversation: (conversationId: string) =>
       ConversationService.deleteConversation(conversationId, user.id),
     getUserStats: () => ConversationService.getUserStats(user.id),

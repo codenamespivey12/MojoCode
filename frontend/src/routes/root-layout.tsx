@@ -7,8 +7,8 @@ import {
   useLocation,
 } from "react-router";
 import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/clerk-react";
-import { I18nKey } from "#/i18n/declaration";
 import { useTranslation } from "react-i18next";
+import { I18nKey } from "#/i18n/declaration";
 import i18n from "#/i18n";
 import { useBalance } from "#/hooks/query/use-balance";
 import { useSettings } from "#/hooks/query/use-settings";
@@ -214,10 +214,8 @@ export default function MainApp() {
           </div>
 
           {renderAuthModal && (
-             <AuthModal
-               githubAuthUrl={effectiveGitHubAuthUrl}
-             />
-           )}
+            <AuthModal githubAuthUrl={effectiveGitHubAuthUrl} />
+          )}
           {renderReAuthModal && <ReauthModal />}
           {config.data?.APP_MODE === "oss" && consentFormIsOpen && (
             <AnalyticsConsentFormModal

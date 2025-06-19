@@ -143,7 +143,7 @@ function isCommonDevelopmentString(str) {
   const technicalPatterns = [
     // URLs and paths
     /^https?:\/\//, // URLs
-    /^\/[a-zA-Z0-9_\-./]*$/, // File paths
+    /^\/[a-zA-Z0-9_\-.\/]*$/, // File paths
     /^[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+$/, // File extensions, class names
     /^@[a-zA-Z0-9/-]+$/, // Import paths
     /^#\/[a-zA-Z0-9/-]+$/, // Alias imports
@@ -151,6 +151,8 @@ function isCommonDevelopmentString(str) {
     /^data:image\/[a-zA-Z0-9;,]+$/, // Data URLs
     /^application\/[a-zA-Z0-9-]+$/, // MIME types
     /^!\[image]\(data:image\/png;base64,$/, // Markdown image with base64 data
+    /^\.\.\//, // Relative paths starting with ../
+    /^\.\//, // Relative paths starting with ./
 
     // Numbers, IDs, and technical values
     /^\d+(\.\d+)?$/, // Numbers
@@ -619,9 +621,26 @@ function scanFileForUnlocalizedStrings(filePath) {
           // Skip if parent is import/export declaration
           if (
             stringPath.parent.type === "ImportDeclaration" ||
-            stringPath.parent.type === "ExportDeclaration"
+            stringPath.parent.type === "ExportDeclaration" ||
+            stringPath.parent.type === "ExportNamedDeclaration" ||
+            stringPath.parent.type === "ExportAllDeclaration" ||
+            stringPath.parent.type === "ImportSpecifier" ||
+            stringPath.parent.type === "ExportSpecifier"
           ) {
             return;
+          }
+
+          // Skip if we're in the source of an import/export
+          let current = stringPath;
+          while (current.parentPath) {
+            if (
+              current.parent.type === "ImportDeclaration" ||
+              current.parent.type === "ExportNamedDeclaration" ||
+              current.parent.type === "ExportAllDeclaration"
+            ) {
+              return;
+            }
+            current = current.parentPath;
           }
 
           // Skip if parent is object property key
@@ -634,7 +653,7 @@ function scanFileForUnlocalizedStrings(filePath) {
 
           // Skip if inside a t() call or Trans component
           let isInsideTranslation = false;
-          let current = stringPath;
+          current = stringPath;
 
           while (current.parentPath && !isInsideTranslation) {
             // Check for t() function call

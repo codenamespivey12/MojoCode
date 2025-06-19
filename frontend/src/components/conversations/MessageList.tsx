@@ -1,8 +1,10 @@
-import React from 'react';
-import { useConversations } from '../../hooks/useConversations';
-import { formatDistanceToNow } from 'date-fns';
-import { User, Bot, Settings } from 'lucide-react';
-import type { Message } from '../../lib/schema';
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { formatDistanceToNow } from "date-fns";
+import { User, Bot, Settings } from "lucide-react";
+import { I18nKey } from "#/i18n/declaration";
+import { useConversations } from "../../hooks/useConversations";
+import type { Message } from "../../lib/schema";
 
 interface MessageListProps {
   conversationId?: string;
@@ -16,11 +18,11 @@ interface MessageItemProps {
 function MessageItem({ message }: MessageItemProps) {
   const getRoleIcon = (role: string) => {
     switch (role) {
-      case 'user':
+      case "user":
         return <User className="w-5 h-5" />;
-      case 'assistant':
+      case "assistant":
         return <Bot className="w-5 h-5" />;
-      case 'system':
+      case "system":
         return <Settings className="w-5 h-5" />;
       default:
         return <User className="w-5 h-5" />;
@@ -29,29 +31,29 @@ function MessageItem({ message }: MessageItemProps) {
 
   const getRoleStyles = (role: string) => {
     switch (role) {
-      case 'user':
+      case "user":
         return {
-          container: 'bg-blue-900/20 border-blue-500/30',
-          icon: 'text-blue-400 bg-blue-800/30',
-          name: 'text-blue-300',
+          container: "bg-blue-900/20 border-blue-500/30",
+          icon: "text-blue-400 bg-blue-800/30",
+          name: "text-blue-300",
         };
-      case 'assistant':
+      case "assistant":
         return {
-          container: 'bg-green-900/20 border-green-500/30',
-          icon: 'text-green-400 bg-green-800/30',
-          name: 'text-green-300',
+          container: "bg-green-900/20 border-green-500/30",
+          icon: "text-green-400 bg-green-800/30",
+          name: "text-green-300",
         };
-      case 'system':
+      case "system":
         return {
-          container: 'bg-gray-800/50 border-gray-600/50',
-          icon: 'text-gray-400 bg-gray-700/50',
-          name: 'text-gray-300',
+          container: "bg-gray-800/50 border-gray-600/50",
+          icon: "text-gray-400 bg-gray-700/50",
+          name: "text-gray-300",
         };
       default:
         return {
-          container: 'bg-gray-50 border-gray-200',
-          icon: 'text-gray-600 bg-gray-100',
-          name: 'text-gray-800',
+          container: "bg-gray-50 border-gray-200",
+          icon: "text-gray-600 bg-gray-100",
+          name: "text-gray-800",
         };
     }
   };
@@ -64,7 +66,7 @@ function MessageItem({ message }: MessageItemProps) {
         <div className={`p-2 rounded-full ${styles.icon}`}>
           {getRoleIcon(message.role)}
         </div>
-        
+
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-2">
             <span className={`text-sm font-medium capitalize ${styles.name}`}>
@@ -76,13 +78,11 @@ function MessageItem({ message }: MessageItemProps) {
               })}
             </span>
           </div>
-          
+
           <div className="prose prose-sm max-w-none">
-            <p className="text-white whitespace-pre-wrap">
-              {message.content}
-            </p>
+            <p className="text-white whitespace-pre-wrap">{message.content}</p>
           </div>
-          
+
           {/* Metadata display */}
           {message.metadata && (
             <details className="mt-3">
@@ -100,10 +100,13 @@ function MessageItem({ message }: MessageItemProps) {
   );
 }
 
-export function MessageList({ conversationId, className = '' }: MessageListProps) {
+export function MessageList({
+  className = "",
+}: Omit<MessageListProps, "conversationId">) {
+  const { t } = useTranslation();
   const { currentConversation, loading, error } = useConversations();
 
-  // If a specific conversation ID is provided, we should load it
+  // Note: conversationId handling would be implemented when needed
   // This would typically be handled by the parent component
   const messages = currentConversation?.messages || [];
 
@@ -113,12 +116,12 @@ export function MessageList({ conversationId, className = '' }: MessageListProps
         {[...Array(3)].map((_, i) => (
           <div key={i} className="animate-pulse border rounded-lg p-4">
             <div className="flex items-start gap-3">
-              <div className="w-9 h-9 bg-gray-200 rounded-full"></div>
+              <div className="w-9 h-9 bg-gray-200 rounded-full" />
               <div className="flex-1">
-                <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
+                <div className="h-4 bg-gray-200 rounded w-1/4 mb-2" />
                 <div className="space-y-2">
-                  <div className="h-3 bg-gray-200 rounded w-full"></div>
-                  <div className="h-3 bg-gray-200 rounded w-3/4"></div>
+                  <div className="h-3 bg-gray-200 rounded w-full" />
+                  <div className="h-3 bg-gray-200 rounded w-3/4" />
                 </div>
               </div>
             </div>
@@ -154,9 +157,9 @@ export function MessageList({ conversationId, className = '' }: MessageListProps
       <div className={`flex items-center justify-center h-64 ${className}`}>
         <div className="text-center text-gray-400">
           <Bot className="w-12 h-12 mx-auto mb-3 text-gray-500" />
-          <p className="text-sm">No messages in this conversation yet</p>
+          <p className="text-sm">{t(I18nKey.MESSAGE$NO_MESSAGES)}</p>
           <p className="text-xs text-gray-500 mt-1">
-            Start typing to begin the conversation
+            {t(I18nKey.MESSAGE$START_TYPING)}
           </p>
         </div>
       </div>

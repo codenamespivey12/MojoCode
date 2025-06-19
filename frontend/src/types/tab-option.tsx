@@ -4,15 +4,8 @@ enum TabOption {
   VSCODE = "vscode",
 }
 
-type TabType =
-  | TabOption.PLANNER
-  | TabOption.BROWSER
-  | TabOption.VSCODE;
+type TabType = TabOption.PLANNER | TabOption.BROWSER | TabOption.VSCODE;
 
-const AllTabs = [
-  TabOption.VSCODE,
-  TabOption.BROWSER,
-  TabOption.PLANNER,
-];
+const AllTabs = [TabOption.VSCODE, TabOption.BROWSER, TabOption.PLANNER];
 
 export { AllTabs, TabOption, type TabType };
