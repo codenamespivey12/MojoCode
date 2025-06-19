@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { AxiosError } from "axios";
 import { useConfig } from "#/hooks/query/use-config";
 import { useSettings } from "#/hooks/query/use-settings";
 import { BrandButton } from "#/components/features/settings/brand-button";
@@ -17,7 +18,9 @@ import { retrieveAxiosErrorMessage } from "#/utils/retrieve-axios-error-message"
 import { GitSettingInputsSkeleton } from "#/components/features/settings/git-settings/github-settings-inputs-skeleton";
 import { useAddGitProviders } from "#/hooks/mutation/use-add-git-providers";
 import { useUserProviders } from "#/hooks/use-user-providers";
-import openHandsAxios from "#/api/open-hands-axios"; // Added for API call
+import { openHands } from "#/api/open-hands-axios"; // Added for API call
+
+const GIT_REPO_EXTENSION = ".git";
 
 function GitSettingsScreen() {
   const { t } = useTranslation();
@@ -53,18 +56,13 @@ function GitSettingsScreen() {
 
   // Handler for importing repository
   const handleImportRepository = async () => {
-    if (!importRepoUrl.trim() || !importRepoUrl.endsWith(".git")) {
-      displayErrorToast(
-        t(
-          // I18nKey.SETTINGS$IMPORT_REPO_INVALID_URL_ERROR || // Placeholder for I18n key
-          "Please enter a valid GitHub repository URL (e.g., https://github.com/user/repo.git).",
-        ),
-      );
+    if (!importRepoUrl.trim() || !importRepoUrl.endsWith(GIT_REPO_EXTENSION)) {
+      displayErrorToast(t(I18nKey.SETTINGS$IMPORT_REPO_INVALID_URL_ERROR));
       return;
     }
     setIsImporting(true);
     try {
-      const response = await openHandsAxios.post("/api/v1/repository/import", {
+      const response = await openHands.post("/api/v1/repository/import", {
         repo_url: importRepoUrl,
       });
       displaySuccessToast(
@@ -76,7 +74,7 @@ function GitSettingsScreen() {
       );
       setImportRepoUrl(""); // Clear input on success
     } catch (error) {
-      const errorMessage = retrieveAxiosErrorMessage(error);
+      const errorMessage = retrieveAxiosErrorMessage(error as AxiosError);
       displayErrorToast(
         errorMessage ||
           t(
@@ -112,7 +110,7 @@ function GitSettingsScreen() {
 
     setIsExporting(true);
     try {
-      const response = await openHandsAxios.post("/api/v1/repository/export", {
+      const response = await openHands.post("/api/v1/repository/export", {
         project_path: exportProjectPath,
         repo_name: exportRepoName,
         description: exportRepoDescription,
@@ -130,7 +128,7 @@ function GitSettingsScreen() {
       setExportRepoDescription("");
       setExportRepoPrivate(false);
     } catch (error) {
-      const errorMessage = retrieveAxiosErrorMessage(error);
+      const errorMessage = retrieveAxiosErrorMessage(error as AxiosError);
       displayErrorToast(
         errorMessage ||
           t(
@@ -215,10 +213,7 @@ function GitSettingsScreen() {
               )}
             </h3>
             <p className="text-sm text-secondary">
-              {t(
-                // I18nKey.SETTINGS$IMPORT_REPO_DESCRIPTION || // Placeholder for I18n key
-                "Enter the HTTPS URL of a GitHub repository to clone it into your workspace. The repository must end with .git.",
-              )}
+              {t(I18nKey.SETTINGS$IMPORT_REPO_DESCRIPTION)}
             </p>
             {/* Basic styled input, replace with TextInput if available and preferred */}
             <input
@@ -227,18 +222,21 @@ function GitSettingsScreen() {
               data-testid="import-repo-url-input"
               value={importRepoUrl}
               onChange={(e) => setImportRepoUrl(e.target.value)}
-              placeholder={t(
-                // I18nKey.SETTINGS$IMPORT_REPO_PLACEHOLDER || // Placeholder for I18n key
-                "https://github.com/user/repo.git",
-              )}
+              placeholder={t(I18nKey.SETTINGS$IMPORT_REPO_PLACEHOLDER)}
               className="bg-input border border-input-border text-text rounded-md p-2 focus:ring-accent focus:border-accent"
               disabled={isImporting}
             />
             <div className="flex justify-start">
               <BrandButton
                 testId="import-repository-button"
+                variant="primary"
+                type="button"
                 onClick={handleImportRepository}
-                isDisabled={!importRepoUrl.trim() || isImporting || !importRepoUrl.endsWith(".git")}
+                isDisabled={
+                  !importRepoUrl.trim() ||
+                  isImporting ||
+                  !importRepoUrl.endsWith(GIT_REPO_EXTENSION)
+                }
               >
                 {isImporting
                   ? t(
@@ -268,7 +266,10 @@ function GitSettingsScreen() {
               )}
             </p>
 
-            <label htmlFor="export-repo-name-input" className="text-sm font-medium text-label">
+            <label
+              htmlFor="export-repo-name-input"
+              className="text-sm font-medium text-label"
+            >
               {t(
                 // I18nKey.SETTINGS$EXPORT_NEW_REPO_NAME_LABEL || // Placeholder
                 "New GitHub Repository Name (Required)",
@@ -285,7 +286,10 @@ function GitSettingsScreen() {
               disabled={isExporting}
             />
 
-            <label htmlFor="export-project-path-input" className="text-sm font-medium text-label mt-2">
+            <label
+              htmlFor="export-project-path-input"
+              className="text-sm font-medium text-label mt-2"
+            >
               {t(
                 // I18nKey.SETTINGS$EXPORT_PROJECT_PATH_LABEL || // Placeholder
                 "Project Path in Workspace (Required)",
@@ -306,7 +310,10 @@ function GitSettingsScreen() {
               disabled={isExporting}
             />
 
-            <label htmlFor="export-repo-description-input" className="text-sm font-medium text-label mt-2">
+            <label
+              htmlFor="export-repo-description-input"
+              className="text-sm font-medium text-label mt-2"
+            >
               {t(
                 // I18nKey.SETTINGS$EXPORT_REPO_DESCRIPTION_LABEL || // Placeholder
                 "Repository Description (Optional)",
@@ -334,7 +341,10 @@ function GitSettingsScreen() {
                 className="h-4 w-4 text-accent focus:ring-accent border-input-border rounded"
                 disabled={isExporting}
               />
-              <label htmlFor="export-repo-private-checkbox" className="ml-2 text-sm text-label">
+              <label
+                htmlFor="export-repo-private-checkbox"
+                className="ml-2 text-sm text-label"
+              >
                 {t(
                   // I18nKey.SETTINGS$EXPORT_PRIVATE_REPO_LABEL || // Placeholder
                   "Create as Private Repository",
@@ -345,8 +355,14 @@ function GitSettingsScreen() {
             <div className="flex justify-start mt-4">
               <BrandButton
                 testId="export-repository-button"
+                variant="primary"
+                type="button"
                 onClick={handleExportRepository}
-                isDisabled={!exportRepoName.trim() || !exportProjectPath.trim() || isExporting}
+                isDisabled={
+                  !exportRepoName.trim() ||
+                  !exportProjectPath.trim() ||
+                  isExporting
+                }
               >
                 {isExporting
                   ? t(

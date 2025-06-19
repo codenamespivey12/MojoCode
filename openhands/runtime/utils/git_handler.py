@@ -247,7 +247,7 @@ class GitHandler:
         # and cwd will be "/abs/path/to".
         # `git clone <url> <name>` will create <name> inside cwd.
         cmd = f'git clone {repo_url} {repo_name}'
-        result = self.execute(cmd, cwd=cwd)
+        result = self.execute(cmd, self.cwd)
         return result.exit_code == 0
 
     def init_repo(self, local_path: str) -> bool:
@@ -260,8 +260,13 @@ class GitHandler:
         Returns:
             bool: True if initialization was successful, False otherwise.
         """
+        # Change to the target directory and initialize git
+        original_cwd = self.cwd
+        self.set_cwd(local_path)
         cmd = 'git init'
-        result = self.execute(cmd, cwd=local_path)
+        result = self.execute(cmd, self.cwd)
+        if original_cwd is not None:
+            self.set_cwd(original_cwd)
         return result.exit_code == 0
 
     def add_all_and_commit(self, local_path: str, message: str) -> bool:
@@ -275,9 +280,14 @@ class GitHandler:
         Returns:
             bool: True if add and commit were successful, False otherwise.
         """
+        # Change to the target directory for git operations
+        original_cwd = self.cwd
+        self.set_cwd(local_path)
         add_cmd = 'git add .'
-        add_result = self.execute(add_cmd, cwd=local_path)
+        add_result = self.execute(add_cmd, self.cwd)
         if add_result.exit_code != 0:
+            if original_cwd is not None:
+                self.set_cwd(original_cwd)
             return False
 
         # It's generally safer if self.execute could take a list of args
@@ -285,23 +295,30 @@ class GitHandler:
         # Assuming self.execute handles the command string appropriately or
         # that messages are simple enough.
         commit_cmd = f'git commit -m "{message}"'
-        commit_result = self.execute(commit_cmd, cwd=local_path)
+        commit_result = self.execute(commit_cmd, self.cwd)
+        if original_cwd is not None:
+            self.set_cwd(original_cwd)
         return commit_result.exit_code == 0
 
     def add_remote(self, local_path: str, remote_name: str, remote_url: str) -> bool:
         """
-        Adds a remote to the Git repository.
+        Adds a remote repository to the local Git repository.
 
         Args:
             local_path (str): The path to the Git repository.
-            remote_name (str): The name for the remote.
-            remote_url (str): The URL for the remote.
+            remote_name (str): The name of the remote to add.
+            remote_url (str): The URL of the remote repository.
 
         Returns:
-            bool: True if adding remote was successful, False otherwise.
+            bool: True if remote was added successfully, False otherwise.
         """
+        # Change to the target directory for git operations
+        original_cwd = self.cwd
+        self.set_cwd(local_path)
         cmd = f'git remote add {remote_name} {remote_url}'
-        result = self.execute(cmd, cwd=local_path)
+        result = self.execute(cmd, self.cwd)
+        if original_cwd is not None:
+            self.set_cwd(original_cwd)
         return result.exit_code == 0
 
     def push_to_remote(self, local_path: str, remote_name: str, branch_name: str = 'main') -> bool:
@@ -316,8 +333,13 @@ class GitHandler:
         Returns:
             bool: True if push was successful, False otherwise.
         """
+        # Change to the target directory for git operations
+        original_cwd = self.cwd
+        self.set_cwd(local_path)
         cmd = f'git push -u {remote_name} {branch_name}'
-        result = self.execute(cmd, cwd=local_path)
+        result = self.execute(cmd, self.cwd)
+        if original_cwd is not None:
+            self.set_cwd(original_cwd)
         return result.exit_code == 0
 
 

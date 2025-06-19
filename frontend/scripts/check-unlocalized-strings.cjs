@@ -120,6 +120,7 @@ const EXCLUDED_TECHNICAL_STRINGS = [
   "STATUS$READY",
   "STATUS$STOPPED",
   "STATUS$ERROR",
+  ".git", // Git repository file extension
 ];
 
 function isExcludedTechnicalString(str) {

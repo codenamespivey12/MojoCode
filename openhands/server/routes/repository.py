@@ -1,11 +1,16 @@
 import os
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 
 from openhands.runtime.utils.git_handler import CommandResult, GitHandler
-from openhands.integrations.github.github_service import GithubServiceImpl # Assuming this is the concrete implementation
+from openhands.integrations.github.github_service import GitHubService, GithubServiceImpl
+
+if TYPE_CHECKING:
+    GitHubServiceType = GitHubService
+else:
+    GitHubServiceType = GitHubService
 # Placeholder for User model, replace with actual import if available
 class User:
     def __init__(self, id_str: str):
@@ -18,7 +23,7 @@ async def get_current_user() -> User:
     return User(id_str="placeholder_user_id")
 
 # Placeholder for get_github_service dependency, replace with actual implementation
-async def get_github_service() -> GithubServiceImpl:
+async def get_github_service() -> GitHubService:
     # In a real app, this would fetch user-specific token and initialize the service
     print("WARNING: Using placeholder get_github_service. Implement proper GitHub service initialization.")
     # This would typically require credentials, e.g., from the current_user or a config
@@ -115,7 +120,7 @@ async def import_repository(
 async def export_repository(
     request: ExportRepoRequest,
     current_user: User = Depends(get_current_user),
-    gh_service: GithubServiceImpl = Depends(get_github_service),
+    gh_service: GitHubService = Depends(get_github_service),
 ):
     git_handler = GitHandler(execute_shell_fn=placeholder_execute_shell_fn)
     user_workspace = os.path.join(WORKSPACE_BASE, current_user.id_str)

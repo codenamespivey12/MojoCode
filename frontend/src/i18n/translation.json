@@ -353,6 +353,15 @@
   "SETTINGS$GIT_SETTINGS": {
     "en": "Git Settings"
   },
+  "SETTINGS$IMPORT_REPO_INVALID_URL_ERROR": {
+    "en": "Please enter a valid GitHub repository URL (e.g., https://github.com/user/repo.git)."
+  },
+  "SETTINGS$IMPORT_REPO_DESCRIPTION": {
+    "en": "Enter the HTTPS URL of a GitHub repository to clone it into your workspace. The repository must end with .git."
+  },
+  "SETTINGS$IMPORT_REPO_PLACEHOLDER": {
+    "en": "https://github.com/user/repo.git"
+  },
   "SETTINGS$SOUND_NOTIFICATIONS": {
     "en": "Sound Notifications"
   },
