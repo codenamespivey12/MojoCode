@@ -143,18 +143,11 @@ def organize_models_and_providers(
     return result_dict
 
 
-VERIFIED_PROVIDERS = ['openai', 'azure', 'anthropic', 'deepseek']
+VERIFIED_PROVIDERS = ['openai']
 
 VERIFIED_OPENAI_MODELS = [
-    'gpt-4o',
-    'gpt-4o-mini',
-    'gpt-4-turbo',
-    'gpt-4',
-    'gpt-4-32k',
-    'o1-mini',
-    'o1',
-    'o3-mini',
-    'o3-mini-2025-01-31',
+    'o4-mini',
+    'o4-mini-2025-04-16',
 ]
 
 VERIFIED_ANTHROPIC_MODELS = [
