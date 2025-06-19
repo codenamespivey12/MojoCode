@@ -224,9 +224,7 @@ async def modify_llm_settings_basic(
             default_model = VERIFIED_OPENAI_MODELS[0]
         else:
             # For other providers, use the first model in the list
-            default_model = (
-                provider_models[0] if provider_models else 'claude-sonnet-4-20250514'
-            )
+            default_model = provider_models[0] if provider_models else 'o4-mini'
 
         # Show the default model but allow changing it
         print_formatted_text(
